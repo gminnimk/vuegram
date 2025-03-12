@@ -1,6 +1,22 @@
 <script setup>
-import ContainerBox from "@/components/ContainerBox.vue";
-import postData from "@/postdata.js";
+import ContainerBox from "@/components/ContainerBox.vue"
+import postData from "@/postdata.js"
+import {ref} from "vue"
+import axios from "axios";
+
+const post = ref(postData)
+
+const uploadCount = ref(0)
+
+const upload = () => {
+  axios
+      .get(`https://codingapple1.github.io/vue/more${uploadCount.value}.json`)
+      .then(res => {
+        post.value.push(res.data);
+        uploadCount.value++;
+      })
+}
+
 </script>
 
 <template>
@@ -14,8 +30,10 @@ import postData from "@/postdata.js";
   </div>
 
   <ContainerBox
-    :postData="postData"
+      :post="post"
   />
+  <button @click="upload">+</button>
+
 
   <div class="footer">
     <ul class="footer-button-plus">

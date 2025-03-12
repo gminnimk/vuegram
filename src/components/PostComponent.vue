@@ -1,8 +1,8 @@
 <script setup>
-import {defineProps} from 'vue';
+import {defineProps} from 'vue'
 
 defineProps({
-  postData: {
+  post: {
     type: Array
   }
 })
@@ -10,16 +10,16 @@ defineProps({
 </script>
 
 <template>
-  <div class="post" v-for="data in postData" :key="data.id">
+  <div class="post" v-for="data in post" :key="data">
     <div class="post-header">
       <div class="profile" :style="{ backgroundImage: `url(${data.userImage})` }"></div>
       <span class="profile-name">{{ data.name }}}</span>
     </div>
     <div class="post-body" :style="{ backgroundImage: `url(${data.postImage})` }"></div>
     <div class="post-content">
-      <p>{{data.likes}} Likes</p>
-      <p><strong>{{data.name}}</strong> {{data.content}}</p>
-      <p class="date">{{data.date}}</p>
+      <p>{{ data.likes }} Likes</p>
+      <p><strong>{{ data.name }}</strong> {{ data.content }}</p>
+      <p class="date">{{ data.date }}</p>
     </div>
   </div>
 </template>

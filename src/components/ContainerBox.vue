@@ -1,9 +1,9 @@
 <script setup>
-import PostComponent from "@/components/PostComponent.vue";
-import {defineProps} from 'vue';
+import PostComponent from "@/components/PostComponent.vue"
+import {defineProps, ref} from 'vue'
 
 defineProps({
-  postData: {
+  post: {
     type: Array
   }
 })
@@ -13,7 +13,7 @@ defineProps({
 <template>
   <div>
     <PostComponent
-        :postData="postData"
+        :post="post"
     />
   </div>
 </template>
