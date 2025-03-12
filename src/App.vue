@@ -1,6 +1,6 @@
 <script setup>
-
 import ContainerBox from "@/components/ContainerBox.vue";
+import postData from "@/postdata.js";
 </script>
 
 <template>
@@ -13,7 +13,9 @@ import ContainerBox from "@/components/ContainerBox.vue";
     </ul>
   </div>
 
-  <ContainerBox/>
+  <ContainerBox
+    :postData="postData"
+  />
 
   <div class="footer">
     <ul class="footer-button-plus">

@@ -1,18 +1,25 @@
 <script setup>
+import {defineProps} from 'vue';
+
+defineProps({
+  postData: {
+    type: Array
+  }
+})
 
 </script>
 
 <template>
-  <div class="post">
+  <div class="post" v-for="data in postData" :key="data.id">
     <div class="post-header">
-      <div class="profile"></div>
-      <span class="profile-name">ChanKim</span>
+      <div class="profile" :style="{ backgroundImage: `url(${data.userImage})` }"></div>
+      <span class="profile-name">{{ data.name }}}</span>
     </div>
-    <div class="post-body"></div>
+    <div class="post-body" :style="{ backgroundImage: `url(${data.postImage})` }"></div>
     <div class="post-content">
-      <p>43 Likes</p>
-      <p><strong>글쓴이아이디</strong> 임시내용</p>
-      <p class="date">May 15</p>
+      <p>{{data.likes}} Likes</p>
+      <p><strong>{{data.name}}</strong> {{data.content}}</p>
+      <p class="date">{{data.date}}</p>
     </div>
   </div>
 </template>

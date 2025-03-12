@@ -1,12 +1,20 @@
 <script setup>
 import PostComponent from "@/components/PostComponent.vue";
+import {defineProps} from 'vue';
+
+defineProps({
+  postData: {
+    type: Array
+  }
+})
+
 </script>
 
 <template>
   <div>
-    <PostComponent/>
-    <PostComponent/>
-    <PostComponent/>
+    <PostComponent
+        :postData="postData"
+    />
   </div>
 </template>
 
