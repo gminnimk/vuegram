@@ -3,8 +3,9 @@ import {defineProps} from 'vue'
 
 defineProps({
   post: {
-    type: Array
-  }
+    type: Object
+  },
+
 })
 
 </script>

@@ -2,19 +2,51 @@
 import ContainerBox from "@/components/ContainerBox.vue"
 import postData from "@/postdata.js"
 import {ref} from "vue"
-import axios from "axios";
+import axios from "axios"
 
 const post = ref(postData)
 
-const uploadCount = ref(0)
+const amount = ref(0)
 
-const upload = () => {
+const step = ref(0)
+
+const imgUrl = ref(null)
+
+const writeText = ref("")
+
+const morePost = () => {
   axios
-      .get(`https://codingapple1.github.io/vue/more${uploadCount.value}.json`)
+      .get(`https://codingapple1.github.io/vue/more${amount.value}.json`)
       .then(res => {
         post.value.push(res.data);
-        uploadCount.value++;
+        amount.value++;
       })
+}
+
+const upload = (e) => {
+  let file = e.target.files;
+  console.log(file[0].type)
+  let url = URL.createObjectURL(file[0]);
+  console.log(url);
+  imgUrl.value = url;
+  step.value++;
+}
+
+const publish = () => {
+  // 유저가 입력한 내용을 data 에 push 해야함
+  const userData = {
+    name: "Kim Hyun",
+    userImage: "https://picsum.photos/100?random=3",
+    postImage: imgUrl.value,
+    likes: 36,
+    date: "May 15",
+    liked: false,
+    content: writeText.value,
+    filter: "perpetua"
+  };
+  post.value.unshift(userData);
+  step.value = 0;
+  console.log(userData);
 }
 
 </script>
@@ -25,19 +57,23 @@ const upload = () => {
       <li>Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li v-if="step === 1" @click="step++">Next</li>
+      <li v-if="step === 2" @click="publish()">upload</li>
     </ul>
   </div>
 
   <ContainerBox
       :post="post"
+      :step="step"
+      :imgUrl="imgUrl"
+      @write="writeText = $event"
   />
-  <button @click="upload">+</button>
+  <button @click="morePost">+</button>
 
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile"/>
+      <input @change="upload" accept="image/*" type="file" id="file" class="inputfile"/>
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
