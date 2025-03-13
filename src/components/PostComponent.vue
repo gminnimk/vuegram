@@ -5,7 +5,6 @@ defineProps({
   post: {
     type: Object
   },
-
 })
 
 </script>

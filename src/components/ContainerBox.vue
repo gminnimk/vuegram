@@ -1,6 +1,7 @@
 <script setup>
 import PostComponent from "@/components/PostComponent.vue"
 import {defineProps, defineEmits} from 'vue'
+import FilterBox from "@/components/FilterBox.vue";
 
 defineProps({
   post: {
@@ -13,6 +14,10 @@ defineProps({
     type: String
   }
 })
+
+const filterData = ["aden", "_1977", "brannan", "brooklyn", "clarendon", "earlybird", "gingham", "hudson",
+  "inkwell", "kelvin", "lark", "lofi", "maven", "mayfair", "moon", "nashville", "perpetua",
+  "reyes", "rise", "slumber", "stinson", "toaster", "valencia", "walden", "willow", "xpro2"]
 
 const emit = defineEmits(["write"])
 
@@ -30,11 +35,10 @@ const emit = defineEmits(["write"])
   <div v-if="step === 1">
     <div class="upload-image" :style="{ backgroundImage: `url(${imgUrl})` }"></div>
     <div class="filters">
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
+      <FilterBox
+          v-for="filters in filterData" :key="filters"
+          :filters="filters"
+          :imgUrl="imgUrl"/>
     </div>
   </div>
 
