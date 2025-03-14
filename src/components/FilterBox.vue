@@ -1,19 +1,32 @@
 <script setup>
-import {defineProps} from 'vue'
+import {defineProps, inject} from 'vue'
 
-defineProps({
+const props = defineProps({
   imgUrl: {
     type: String
   },
-  filters: {
+  filter: {
     type: String
   }
 })
 
+const emitter = inject('emitter')
+
+const selectFilter = () => {
+  emitter.emit('filterSelected', props.filter)
+  console.log(`필터 선택됨: ${props.filter}`)
+}
+
 </script>
 
 <template>
-  <div :class="filters" class="filter-item" :style="`background-image:url(${imgUrl})`"></div>
+  <div
+      @click="selectFilter"
+      :class="filter"
+      class="filter-item"
+      :style="`background-image:url(${imgUrl})`">
+    <p>{{ filter }}</p>
+  </div>
 </template>
 
 <style scoped>

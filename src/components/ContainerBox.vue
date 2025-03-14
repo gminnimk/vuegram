@@ -12,6 +12,9 @@ defineProps({
   },
   imgUrl: {
     type: String
+  },
+  selectedFilter: {
+    type: String
   }
 })
 
@@ -28,25 +31,31 @@ const emit = defineEmits(["write"])
     <PostComponent
         v-if="step === 0"
         :post="post"
+        :selectedFilter="selectedFilter"
     />
   </div>
 
   <!-- 필터선택페이지 -->
   <div v-if="step === 1">
-    <div class="upload-image" :style="{ backgroundImage: `url(${imgUrl})` }"></div>
+    <div :class="selectedFilter" class="upload-image"
+         :style="{ backgroundImage: `url(${imgUrl})` }">
+    </div>
     <div class="filters">
       <FilterBox
-          v-for="filters in filterData" :key="filters"
-          :filters="filters"
+          v-for="filter in filterData" :key="filter"
+          :filter="filter"
           :imgUrl="imgUrl"/>
     </div>
   </div>
 
   <!-- 글작성페이지 -->
   <div v-if="step === 2">
-    <div class="upload-image" :style="{backgroundImage: `url(${imgUrl})`}"></div>
+    <div :class="selectedFilter" class="upload-image"
+         :style="{backgroundImage: `url(${imgUrl})`}"></div>
     <div class="write">
-      <textarea @input="emit('write', $event.target.value)" class="write-box" placeholder="write!"></textarea>
+      <textarea
+          @input="emit('write', $event.target.value)"
+          class="write-box" placeholder="write!"></textarea>
     </div>
   </div>
 </template>

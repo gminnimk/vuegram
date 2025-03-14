@@ -1,18 +1,34 @@
 <script setup>
 import ContainerBox from "@/components/ContainerBox.vue"
 import postData from "@/postdata.js"
-import {ref} from "vue"
+import {ref, inject, onMounted, onUnmounted} from "vue"
 import axios from "axios"
 
+const emitter = inject('emitter')
+
 const post = ref(postData)
-
 const amount = ref(0)
-
 const step = ref(0)
-
 const imgUrl = ref(null)
-
 const writeText = ref("")
+const selectedFilter = ref("normal") // 선택된 필터 상태 저장
+
+// 필터 선택 이벤트 핸들러
+const handleFilterSelected = (filter) => {
+  selectedFilter.value = filter
+  console.log('선택된 필터:', selectedFilter.value)
+}
+
+// 컴포넌트 마운트 시 이벤트 리스너 등록
+// emitter 수신하는 코드는 보통 mount 안에 작성하는게 관습
+onMounted(() => {
+  emitter.on('filterSelected', handleFilterSelected)
+})
+
+// 컴포넌트 언마운트 시 이벤트 리스너 제거 (메모리 누수 방지)
+onUnmounted(() => {
+  emitter.off('filterSelected', handleFilterSelected)
+})
 
 const morePost = () => {
   axios
@@ -42,7 +58,7 @@ const publish = () => {
     date: "May 15",
     liked: false,
     content: writeText.value,
-    filter: "perpetua"
+    filter: selectedFilter.value // 선택된 필터 적용
   };
   post.value.unshift(userData);
   step.value = 0;
@@ -67,9 +83,9 @@ const publish = () => {
       :step="step"
       :imgUrl="imgUrl"
       @write="writeText = $event"
+      :selectedFilter="selectedFilter"
   />
   <button @click="morePost">+</button>
-
 
   <div class="footer">
     <ul class="footer-button-plus">
