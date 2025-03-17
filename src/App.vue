@@ -1,22 +1,26 @@
 <template>
   <div class="header">
     <ul class="header-button-left">
-      <li>Cancel</li>
+      <li @click="step === 0">Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li @click="step++" v-if="step === 1">Next</li>
+      <li @click="publish" v-if="step === 2">publish</li>
     </ul>
     <img src="./assets/logo.png" class="logo"/>
   </div>
 
   <ContainerBox
       :post="post"
+      :step="step"
+      :imgUrl="imgUrl"
+      @write="write = $event"
   />
 
   <div class="footer">
-    <button @click="morePost">더보기</button>
+    <button @click="morePost" v-if="step === 0">더보기</button>
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile"/>
+      <input @change="upload" type="file" id="file" class="inputfile"/>
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
@@ -28,8 +32,11 @@ import ContainerBox from "@/components/ContainerBox.vue";
 import axios from 'axios'
 import {ref} from 'vue'
 
+const step = ref(0)
 const amount = ref(0)
 const post = ref(postData)
+const imgUrl = ref('')
+const write = ref('')
 
 const morePost = () => {
   axios
@@ -41,6 +48,30 @@ const morePost = () => {
       })
       .catch('data 추가 실패')
 }
+
+const upload = (e) => {
+  let file = e.target.files
+  let url = URL.createObjectURL(file[0])
+  console.log(url)
+  imgUrl.value = url
+  step.value++
+}
+
+const publish = () => {
+  const myPost = {
+    name: "Kim Hyun",
+    userImage: "https://picsum.photos/100?random=3",
+    postImage: imgUrl.value,
+    likes: 36,
+    date: "May 15",
+    liked: false,
+    content: write.value,
+    filter: "perpetua"
+  }
+  post.value.unshift(myPost)
+  step.value = 0
+}
+
 </script>
 
 <style>
