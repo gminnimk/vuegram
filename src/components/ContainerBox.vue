@@ -3,23 +3,24 @@
   <PostBox
       v-if="step === 0"
       :post="post"
+      :selectedFilter="selectedFilter"
   />
 
   <!-- 두 번째 화면 (필터 선택) -->
   <div v-if="step === 1">
-    <div class="upload-image" :style="{ backgroundImage: `url(${imgUrl})`}"></div>
+    <div :class="selectedFilter" class="upload-image" :style="{ backgroundImage: `url(${imgUrl})`}"></div>
     <div class="filters">
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
-      <div class="filter-1"></div>
+      <FilterBox
+          v-for="filter in filters" :key="filter"
+          :imgUrl="imgUrl"
+          :filter="filter"
+      />
     </div>
   </div>
 
   <!-- 세 번째 화면 (글 작성) -->
   <div v-if="step === 2">
-    <div class="upload-image" :style="{backgroundImage: `url(${imgUrl})`}"></div>
+    <div :class="selectedFilter" class="upload-image" :style="{backgroundImage: `url(${imgUrl})`}"></div>
     <div class="write">
       <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
     </div>
@@ -29,6 +30,7 @@
 <script setup>
 import PostBox from "./PostBox.vue"
 import {defineProps, defineEmits} from "vue"
+import FilterBox from "@/components/FilterBox.vue";
 
 defineProps({
   post: ({
@@ -39,10 +41,17 @@ defineProps({
   }),
   imgUrl: ({
     type: String
+  }),
+  selectedFilter: ({
+    type: String
   })
 })
 
 const emit = defineEmits(['write'])
+
+const filters = ["aden", "_1977", "brannan", "brooklyn", "clarendon", "earlybird", "gingham", "hudson",
+  "inkwell", "kelvin", "lark", "lofi", "maven", "mayfair", "moon", "nashville", "perpetua",
+  "reyes", "rise", "slumber", "stinson", "toaster", "valencia", "walden", "willow", "xpro2"]
 
 </script>
 

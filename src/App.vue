@@ -15,6 +15,7 @@
       :step="step"
       :imgUrl="imgUrl"
       @write="write = $event"
+      :selectedFilter="selectedFilter"
   />
 
   <div class="footer">
@@ -30,13 +31,28 @@
 import postData from './assets/postData'
 import ContainerBox from "@/components/ContainerBox.vue";
 import axios from 'axios'
-import {ref} from 'vue'
+import {ref, onMounted, inject, onUnmounted} from 'vue'
 
 const step = ref(0)
 const amount = ref(0)
 const post = ref(postData)
 const imgUrl = ref('')
 const write = ref('')
+const selectedFilter = ref('')
+const emitter = inject('emitter')
+
+const handleFilterSelect = (filter) => {
+  selectedFilter.value = filter
+  console.log("선택된 필터: ", filter)
+}
+
+onMounted(() => {
+  emitter.on('filterSelect', handleFilterSelect)
+})
+
+onUnmounted(() => {
+  emitter.off('filterSelect', handleFilterSelect)
+})
 
 const morePost = () => {
   axios
@@ -66,7 +82,7 @@ const publish = () => {
     date: "May 15",
     liked: false,
     content: write.value,
-    filter: "perpetua"
+    filter: selectedFilter.value
   }
   post.value.unshift(myPost)
   step.value = 0

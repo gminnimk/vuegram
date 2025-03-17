@@ -4,7 +4,7 @@
       <div class="profile" :style="{ backgroundImage: `url(${data.userImage})`}"></div>
       <span class="profile-name">{{ data.name }}</span>
     </div>
-    <div class="post-body" :style="{ backgroundImage: `url(${data.postImage})`}"></div>
+    <div :class="selectedFilter" class="post-body" :style="{ backgroundImage: `url(${data.postImage})`}"></div>
     <div class="post-content">
       <p>{{ data.likes }} Likes</p>
       <p><strong>{{ data.name }}</strong> {{ data.content }}</p>
@@ -19,8 +19,12 @@ import {defineProps} from 'vue'
 defineProps({
   post: ({
     type: Array
+  }),
+  selectedFilter: ({
+    type: String
   })
 })
+
 </script>
 
 <style>

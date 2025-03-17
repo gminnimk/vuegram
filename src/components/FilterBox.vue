@@ -1,9 +1,30 @@
 <script setup>
+import {defineProps, inject} from 'vue'
+
+const props = defineProps({
+  imgUrl: ({
+    type: String
+  }),
+  filter: ({
+    type: String
+  })
+})
+
+const emitter = inject('emitter')
+
+const selectFilter = () => {
+  emitter.emit('filterSelect', props.filter)
+}
 
 </script>
 
 <template>
-<div class="filter-item"></div>
+  <div
+      @click="selectFilter"
+      :class="filter"
+      :style="{ backgroundImage : `url(${props.imgUrl})`}"
+      class="filter-item">{{ filter }}
+  </div>
 </template>
 
 <style scoped>
@@ -13,8 +34,8 @@
   margin: 10px 10px 10px auto;
   padding: 8px;
   display: inline-block;
-  color : white;
+  color: white;
   background-size: cover;
-  background-position : center;
+  background-position: center;
 }
 </style>
