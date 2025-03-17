@@ -1,7 +1,7 @@
 <template>
   <div>
     <PostBox
-        :postData="postData"
+        :post="post"
     />
   </div>
 </template>
@@ -11,7 +11,7 @@ import PostBox from "./PostBox.vue"
 import {defineProps} from "vue"
 
 defineProps({
-  postData: ({
+  post: ({
     type: Array
   })
 })

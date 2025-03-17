@@ -1,14 +1,14 @@
 <template>
-  <div class="post" v-for="post in postData" :key="post.id">
+  <div class="post" v-for="data in post" :key="post.id">
     <div class="post-header">
-      <div class="profile" :style="{ backgroundImage: `url(${post.userImage})`}"></div>
-      <span class="profile-name">{{ post.name }}</span>
+      <div class="profile" :style="{ backgroundImage: `url(${data.userImage})`}"></div>
+      <span class="profile-name">{{ data.name }}</span>
     </div>
-    <div class="post-body" :style="{ backgroundImage: `url(${post.postImage})`}"></div>
+    <div class="post-body" :style="{ backgroundImage: `url(${data.postImage})`}"></div>
     <div class="post-content">
-      <p>{{ post.likes }} Likes</p>
-      <p><strong>{{ post.name }}</strong> {{ post.content }}</p>
-      <p class="date">{{ post.date }}}</p>
+      <p>{{ data.likes }} Likes</p>
+      <p><strong>{{ data.name }}</strong> {{ data.content }}</p>
+      <p class="date">{{ data.date }}}</p>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@
 import {defineProps} from 'vue'
 
 defineProps({
-  postData: ({
+  post: ({
     type: Array
   })
 })

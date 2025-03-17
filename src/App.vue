@@ -10,10 +10,11 @@
   </div>
 
   <ContainerBox
-      :postData="postData"
+      :post="post"
   />
 
   <div class="footer">
+    <button @click="morePost">더보기</button>
     <ul class="footer-button-plus">
       <input type="file" id="file" class="inputfile"/>
       <label for="file" class="input-plus">+</label>
@@ -24,6 +25,22 @@
 <script setup>
 import postData from './assets/postData'
 import ContainerBox from "@/components/ContainerBox.vue";
+import axios from 'axios'
+import {ref} from 'vue'
+
+const amount = ref(0)
+const post = ref(postData)
+
+const morePost = () => {
+  axios
+      .get(`https://codingapple1.github.io/vue/more${amount.value}.json`)
+      .then((res) => {
+        post.value.push(res.data)
+        console.log(res.data)
+        amount.value++
+      })
+      .catch('data 추가 실패')
+}
 </script>
 
 <style>
