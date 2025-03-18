@@ -3,18 +3,14 @@
   <PostBox
       v-if="step === 0"
       :post="post"
-      :selectedFilter="selectedFilter"
   />
 
   <!-- 두 번째 화면 (필터 선택) -->
   <div v-if="step === 1">
     <div :class="selectedFilter" class="upload-image" :style="{ backgroundImage: `url(${imgUrl})`}"></div>
     <div class="filters">
-      <FilterBox
-          v-for="filter in filters" :key="filter"
-          :imgUrl="imgUrl"
-          :filter="filter"
-      />
+      <FilterBox v-for="filter in filters" :key="filter"
+                 :filter="filter" :imgUrl="imgUrl"/>
     </div>
   </div>
 
@@ -22,37 +18,29 @@
   <div v-if="step === 2">
     <div :class="selectedFilter" class="upload-image" :style="{backgroundImage: `url(${imgUrl})`}"></div>
     <div class="write">
-      <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
+      <textarea @input="store.setWriteContent($event.target.value)" class="write-box" placeholder="write!"></textarea>
     </div>
   </div>
 </template>
 
 <script setup>
 import PostBox from "./PostBox.vue"
-import {defineProps, defineEmits} from "vue"
 import FilterBox from "@/components/FilterBox.vue";
+import {defineProps} from "vue"
+import {useMainStore} from '@/store.js'
 
 defineProps({
-  post: ({
-    type: Array
-  }),
-  step: ({
-    type: Number
-  }),
-  imgUrl: ({
-    type: String
-  }),
-  selectedFilter: ({
-    type: String
-  })
+  post: {type: Array},
+  step: {type: Number},
+  imgUrl: {type: String},
+  selectedFilter: {type: String}
 })
 
-const emit = defineEmits(['write'])
+const store = useMainStore()
 
 const filters = ["aden", "_1977", "brannan", "brooklyn", "clarendon", "earlybird", "gingham", "hudson",
   "inkwell", "kelvin", "lark", "lofi", "maven", "mayfair", "moon", "nashville", "perpetua",
   "reyes", "rise", "slumber", "stinson", "toaster", "valencia", "walden", "willow", "xpro2"]
-
 </script>
 
 <style scoped>

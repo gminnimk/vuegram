@@ -1,93 +1,42 @@
 <template>
   <div class="header">
     <ul class="header-button-left">
-      <li @click="step === 0">Cancel</li>
+      <li @click="store.cancel">Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li @click="step++" v-if="step === 1">Next</li>
-      <li @click="publish" v-if="step === 2">publish</li>
+      <li @click="store.increaseStep()" v-if="step === 1">Next</li>
+      <li @click="publishPost" v-if="step === 2">publish</li>
     </ul>
-    <img src="./assets/logo.png" class="logo"/>
+    <img src="./assets/logo.png" class="logo" alt=""/>
   </div>
 
   <ContainerBox
       :post="post"
       :step="step"
       :imgUrl="imgUrl"
-      @write="write = $event"
       :selectedFilter="selectedFilter"
   />
 
   <div class="footer">
     <button @click="morePost" v-if="step === 0">더보기</button>
     <ul class="footer-button-plus">
-      <input @change="upload" type="file" id="file" class="inputfile"/>
+      <input @change="store.uploadImage" type="file" id="file" class="inputfile"/>
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
 </template>
 
 <script setup>
-import postData from './assets/postData'
-import ContainerBox from "@/components/ContainerBox.vue";
-import axios from 'axios'
-import {ref, onMounted, inject, onUnmounted} from 'vue'
+import ContainerBox from "@/components/ContainerBox.vue"
+import {useMainStore} from '@/store.js'
+import {storeToRefs} from 'pinia'
 
-const step = ref(0)
-const amount = ref(0)
-const post = ref(postData)
-const imgUrl = ref('')
-const write = ref('')
-const selectedFilter = ref('')
-const emitter = inject('emitter')
+const store = useMainStore()
 
-const handleFilterSelect = (filter) => {
-  selectedFilter.value = filter
-  console.log("선택된 필터: ", filter)
-}
+const {step, post, selectedFilter, imgUrl} = storeToRefs(store)
 
-onMounted(() => {
-  emitter.on('filterSelect', handleFilterSelect)
-})
-
-onUnmounted(() => {
-  emitter.off('filterSelect', handleFilterSelect)
-})
-
-const morePost = () => {
-  axios
-      .get(`https://codingapple1.github.io/vue/more${amount.value}.json`)
-      .then((res) => {
-        post.value.push(res.data)
-        console.log(res.data)
-        amount.value++
-      })
-      .catch('data 추가 실패')
-}
-
-const upload = (e) => {
-  let file = e.target.files
-  let url = URL.createObjectURL(file[0])
-  console.log(url)
-  imgUrl.value = url
-  step.value++
-}
-
-const publish = () => {
-  const myPost = {
-    name: "Kim Hyun",
-    userImage: "https://picsum.photos/100?random=3",
-    postImage: imgUrl.value,
-    likes: 36,
-    date: "May 15",
-    liked: false,
-    content: write.value,
-    filter: selectedFilter.value
-  }
-  post.value.unshift(myPost)
-  step.value = 0
-}
-
+const publishPost = store.publish
+const morePost = store.more
 </script>
 
 <style>
@@ -134,6 +83,7 @@ ul {
   width: 50px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 15px;
 }
 
 .footer {

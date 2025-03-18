@@ -1,12 +1,12 @@
 <template>
-  <div class="post" v-for="data in post" :key="post.id">
+  <div class="post" v-for="(data,i) in post" :key="i">
     <div class="post-header">
       <div class="profile" :style="{ backgroundImage: `url(${data.userImage})`}"></div>
       <span class="profile-name">{{ data.name }}</span>
     </div>
-    <div :class="selectedFilter" class="post-body" :style="{ backgroundImage: `url(${data.postImage})`}"></div>
+    <div :class="data.filter" class="post-body" :style="{ backgroundImage: `url(${data.postImage})`}"></div>
     <div class="post-content">
-      <p>{{ data.likes }} Likes</p>
+      <p @click="store.increaseLikes()">likes {{ data.likes }}</p>
       <p><strong>{{ data.name }}</strong> {{ data.content }}</p>
       <p class="date">{{ data.date }}}</p>
     </div>
@@ -15,16 +15,13 @@
 
 <script setup>
 import {defineProps} from 'vue'
+import {useMainStore} from '@/store.js'
 
 defineProps({
-  post: ({
-    type: Array
-  }),
-  selectedFilter: ({
-    type: String
-  })
+  post: {type: Array}
 })
 
+const store = useMainStore()
 </script>
 
 <style>

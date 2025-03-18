@@ -1,31 +1,28 @@
-<script setup>
-import {defineProps, inject} from 'vue'
-
-const props = defineProps({
-  imgUrl: ({
-    type: String
-  }),
-  filter: ({
-    type: String
-  })
-})
-
-const emitter = inject('emitter')
-
-const selectFilter = () => {
-  emitter.emit('filterSelect', props.filter)
-}
-
-</script>
-
 <template>
   <div
       @click="selectFilter"
       :class="filter"
-      :style="{ backgroundImage : `url(${props.imgUrl})`}"
-      class="filter-item">{{ filter }}
+      :style="{ backgroundImage : `url(${imgUrl})`}"
+      class="filter-item">
+    {{ filter }}
   </div>
 </template>
+
+<script setup>
+import {defineProps} from 'vue'
+import {useMainStore} from '@/store.js'
+
+const props = defineProps({
+  filter: {type: String},
+  imgUrl: {type: String}
+})
+
+const store = useMainStore()
+
+const selectFilter = () => {
+  store.setSelectFilter(props.filter)
+}
+</script>
 
 <style scoped>
 .filter-item {
