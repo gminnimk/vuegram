@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
-import postData from "@/assets/postData.js";
-import axios from "axios";
+import postData from "@/assets/postData.js"
+import axios from "axios"
 
 export const useMainStore = defineStore('main', {
     state: () => ({

@@ -1,21 +1,21 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import {ref, onMounted, computed} from 'vue'
+import axios from 'axios'
 
-const follower = ref([]);
-const keyword = ref('');
+const follower = ref([])
+const keyword = ref('')
 
 onMounted(() => {
   axios.get('/follower.json').then((res) => {
-    follower.value = res.data;
-  });
-});
+    follower.value = res.data
+  })
+})
 
 // 검색어에 따라 필터링된 팔로워 목록
 const filteredFollowers = computed(() => {
-  if (!keyword.value) return follower.value;
-  return follower.value.filter(a => a.name.includes(keyword.value));
-});
+  if (!keyword.value) return follower.value
+  return follower.value.filter(a => a.name.includes(keyword.value))
+})
 </script>
 
 <template>
