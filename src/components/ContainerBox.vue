@@ -21,11 +21,16 @@
       <textarea @input="store.setWriteContent($event.target.value)" class="write-box" placeholder="write!"></textarea>
     </div>
   </div>
+
+  <div v-if="step === 3">
+    <MyPage/>
+  </div>
 </template>
 
 <script setup>
 import PostBox from "./PostBox.vue"
 import FilterBox from "@/components/FilterBox.vue";
+import MyPage from "@/components/MyPage.vue";
 import {defineProps} from "vue"
 import {useMainStore} from '@/store.js'
 
