@@ -31,7 +31,6 @@
 import PostBox from "./PostBox.vue"
 import FilterBox from "@/components/FilterBox.vue"
 import MyPage from "@/components/MyPage.vue"
-import {defineProps} from "vue"
 import {useMainStore} from '@/store.js'
 
 defineProps({

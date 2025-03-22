@@ -9,7 +9,6 @@
 </template>
 
 <script setup>
-import {defineProps} from 'vue'
 import {useMainStore} from '@/store.js'
 
 const props = defineProps({
